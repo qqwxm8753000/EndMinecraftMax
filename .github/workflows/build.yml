@@ -1,32 +1,28 @@
-name: Build and Upload with Maven
+name: Manual Build and Upload
 
 on:
-  push:
-    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Set up JDK
-      uses: actions/setup-java@v2
-      with:
-        java-version: '11'
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
 
-    - name: Build with Maven
-      run: mvn -B package --file pom.xml
+      - name: Build with Maven
+        run: mvn -B package --file pom.xml
 
-    - name: Upload artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: built-artifacts
-        path: target/
+      - name: Create archive
+        run: tar czf my-project.tar.gz ./ pom.xml .github/workflows/build.yml
 
-    - name: Upload project files
-      uses: actions/upload-artifact@v2
-      with:
-        name: project-files
-        path: .
+      - name: Upload archive
+        uses: actions/upload-artifact@v2
+        with:
+          name: my-project.tar.gz
+          path: my-project.tar.gz
