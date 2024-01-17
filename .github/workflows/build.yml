@@ -20,7 +20,7 @@ jobs:
         run: mvn -B package --file pom.xml
 
       - name: Create archive
-        run: tar czf my-project.tar.gz ./ pom.xml .github/workflows/build.yml
+        run: tar czf --ignore-failed-read my-project.tar.gz my-project.tar.gz ./ pom.xml .github/workflows/build.yml
 
       - name: Upload archive
         uses: actions/upload-artifact@v2
