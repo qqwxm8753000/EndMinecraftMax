@@ -1,0 +1,32 @@
+name: Build and Upload with Maven
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up JDK
+      uses: actions/setup-java@v2
+      with:
+        java-version: '11'
+
+    - name: Build with Maven
+      run: mvn -B package --file pom.xml
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: built-artifacts
+        path: target/
+
+    - name: Upload project files
+      uses: actions/upload-artifact@v2
+      with:
+        name: project-files
+        path: .
